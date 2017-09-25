@@ -27,6 +27,13 @@ Now : python shell can import like:
 from flaskr import init_db
 init_db()
 '''
+@app.before_request
+def before_request():
+    g.db = connect_db() # g have only one info of one request, supports thread
+
+@app.teardown_request # when excepts
+def teardown_request(exception):
+    g.db.close()
 
 if __name__ == '__main__':
     app.run()
