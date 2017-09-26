@@ -81,7 +81,7 @@ def get_time():
     now = datetime.utcnow()
     return json_response(time=now)
 
-@app.route('/increment_value')
+@app.route('/increment_value', methods=['POST'])
 def increment_value():
     data = request.get_json(force=True) # skim mimetype, have shorte curl command
     try:

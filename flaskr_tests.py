@@ -49,6 +49,14 @@ class FlaskrTestCase(unittest.TestCase):
         rv = self.app.get('/get_value')
         assert '"value": 12' in rv.data
 
+    def test_invalid_data(self):
+        rv = self.app.post('/increment_value', data=dict(
+            data='bla'
+        ))
+        assert '"status": 400' in rv.data
+        assert '"description": "Not a JSON."' in rv.data
+
+
 
 if __name__ == '__main__':
     unittest.main()
