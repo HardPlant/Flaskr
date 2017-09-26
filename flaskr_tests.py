@@ -42,7 +42,7 @@ class FlaskrTestCase(unittest.TestCase):
 
     def test_json(self):
         rv = self.app.get('/get_value')
-        assert 'value:12' in rv.data
+        assert '"value": 12' in rv.data
 
 if __name__ == '__main__':
     unittest.main()
