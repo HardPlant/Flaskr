@@ -1,8 +1,10 @@
 import sqlite3
 from contextlib import closing
+from datetime import datetime
 
 from flask import Flask, request, session, g, redirect, url_for, \
     abort, render_template, flash
+from flask_json import FlaskJSON, JsonError, json_response, as_json
 
 # configuration
 DATABASE = './tmp/flaskr.db'
@@ -12,6 +14,8 @@ USERNAME = 'admin'
 PASSWORD = 'default'
 
 app = Flask(__name__)
+json = FlaskJSON(app)
+
 app.config.from_object(__name__) # will find all UPPERCASE vars above
 # app.config.from_envvar("FLASKER_SETTINGS", silent=True) can load envvar, silent prevents if envvar doesn't exits
 
@@ -71,6 +75,26 @@ def logout():
     session.pop('logged in', None) # doesn't check if user logged in
     flash('You were logged out')
     return redirect(url_for('show_entries'))
+
+@app.route('/get_time')
+def get_time():
+    now = datetime.utcnow()
+    return json_response(time=now)
+
+@app.route('increment_value')
+def increment_value():
+    data = request.get_json(force=True) # skim mimetype, have shorte curl command
+    try:
+        value = int(data['value'])
+    except (KeyError,TypeError, ValueError):
+        raise JsonError(description='Invalid value.')
+    return json_response(value=value+1)
+
+
+@app.route('/get_value')
+@as_json
+def get_value():
+    return dict(value=12)
 
 if __name__ == '__main__':
     app.run()
