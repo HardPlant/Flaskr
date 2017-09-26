@@ -2,6 +2,8 @@ import os
 import tempfile
 import unittest
 
+from flask_json import JsonTestResponse
+
 import flaskr
 
 
@@ -10,7 +12,9 @@ class FlaskrTestCase(unittest.TestCase):
     def setUp(self):
         self.db_fd, flaskr.app.config['DATABASE'] = tempfile.mkstemp()
         flaskr.app.config['TESTING'] = True
+        flaskr.app.response_class = JsonTestResponse
         self.app = flaskr.app.test_client()
+
         flaskr.init_db()
 
     def tearDown(self):
@@ -56,7 +60,11 @@ class FlaskrTestCase(unittest.TestCase):
         assert '"status": 400' in rv.data
         assert '"description": "Not a JSON."' in rv.data
 
+    def test_json(self):
+        rv = self.app.get('/get_value')
 
+        assert 'value' in rv.json
+        assert type(rv.json['value']) is int
 
 if __name__ == '__main__':
     unittest.main()
