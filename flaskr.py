@@ -1,10 +1,11 @@
 import sqlite3
-from flask import Flask, request, session, g, redirect, url_for, \
-    abort, render_template, flash
 from contextlib import closing
 
+from flask import Flask, request, session, g, redirect, url_for, \
+    abort, render_template, flash
+
 # configuration
-DATABASE = '/tmp/flaskr.db'
+DATABASE = './tmp/flaskr.db'
 DEBUG = True # never True at operate mode; user can exectue code
 SECRET_KEY = 'devKey'
 USERNAME = 'admin'
