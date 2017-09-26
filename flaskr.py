@@ -98,6 +98,19 @@ def get_value():
 
 from blueprint import simple_page
 app.register_blueprint(simple_page, url_prefix='/pages')
+def get_blueprint_resource():
+    with simple_page.open_resource('static/style.css') as f:
+        code = f.read()
+
+    from blueprint import Blueprint
+    admin = Blueprint('admin', __name__
+                      , static_folder='static'
+                      , template_folder='templates')
+    url_for('admin.static', filename='style.css')
+    # /admin/admin.py blueprint,
+    # ./index.html
+    # ./templates/admin/index.html
+
 
 if __name__ == '__main__':
     app.run()
