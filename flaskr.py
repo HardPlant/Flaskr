@@ -96,6 +96,9 @@ def increment_value():
 def get_value():
     return dict(value=12)
 
+from blueprint import simple_page
+app.register_blueprint(simple_page)
+
 if __name__ == '__main__':
     app.run()
 
