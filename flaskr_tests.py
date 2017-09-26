@@ -40,9 +40,15 @@ class FlaskrTestCase(unittest.TestCase):
         assert '&lt;Hello&gt;' in rv.data
         assert '<strong>HTML</strong> allowed here' in rv.data
 
-    def test_json(self):
+    def test_time(self):
+        rv = self.app.get('/get_time')
+        assert '"status": 200' in rv.data
+        assert '"time": ' in rv.data
+
+    def test_get_value(self):
         rv = self.app.get('/get_value')
         assert '"value": 12' in rv.data
+
 
 if __name__ == '__main__':
     unittest.main()
