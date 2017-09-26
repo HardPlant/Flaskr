@@ -21,5 +21,14 @@ class FlaskrTestCase(unittest.TestCase):
         rv = self.app.get('/')
         assert 'No entries here so far' in rv.data
 
+    def login(self, username, password):
+        return self.app.post('/login', data=dict(
+            username=username,
+            password=password
+        ), follow_redirects=True)
+
+    def logout(self):
+        return self.app.get('/logout', follow_redirect=True)
+
 if __name__ == '__main__':
     unittest.main()
