@@ -97,7 +97,7 @@ def get_value():
     return dict(value=12)
 
 from blueprint import simple_page
-app.register_blueprint(simple_page)
+app.register_blueprint(simple_page, url_prefix='/pages')
 
 if __name__ == '__main__':
     app.run()
