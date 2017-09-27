@@ -28,4 +28,4 @@ class Entry(Base):
         self.text = text
 
     def __repr__(self):
-        return '<Enrty %r>' % (self.name)
+        return '<Enrty %r>' % (self.title)
