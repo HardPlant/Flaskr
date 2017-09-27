@@ -52,7 +52,7 @@ def get_user():
     return User.query.filter(User.name=='admin').first()
 
 
-@app.route('/add_user', method=['POST'])
+@app.route('/add_user', methods=['POST'])
 def add_user():
     request.get('username')
     u = User('admin', 'admin@localhost')

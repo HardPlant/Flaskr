@@ -66,5 +66,7 @@ class FlaskrTestCase(unittest.TestCase):
         assert 'value' in rv.json
         assert type(rv.json['value']) is int
 
+
+
 if __name__ == '__main__':
     unittest.main()
