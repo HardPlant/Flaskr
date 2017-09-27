@@ -4,6 +4,7 @@ from flask import Flask, request, session, g, redirect, url_for, \
     abort, render_template, flash
 from flask_json import FlaskJSON, JsonError, json_response, as_json
 
+from blueprint import simple_page
 from database import db_session
 from models import User
 
@@ -42,17 +43,26 @@ def before_request():
 def teardown_request(exception):
     g.db.close()
 '''
-@app.route('/add_user', methods=['POST'])
+
+
+@app.route('/user', method='GET')
+def get_user():
+    return User.query.filter(User.name=='admin').first()
+
+
+@app.route('/user', method='POST')
 def add_user():
     u = User('admin', 'admin@localhost')
     db_session.add(u)
     db_session.commit()
+
 
 @app.route('/')
 def show_entries():
     cur = g.db.execute('select title, text from entries order by id desc')
     entries = [dict(title=row[0], text=row[1]) for row in cur.fetchall()]
     return render_template('show_entries.html', entries=entries)
+
 
 @app.route('/add', methods=['POST'])
 def add_entry():
@@ -63,6 +73,7 @@ def add_entry():
     g.db.commit()
     flash('New entry was succesfully posted')
     return redirect(url_for('show_entries'))
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -78,16 +89,19 @@ def login():
             return redirect(url_for('show_entries'))
     return render_template('login.html', error=error)
 
+
 @app.route('/logout')
 def logout():
     session.pop('logged in', None) # doesn't check if user logged in
     flash('You were logged out')
     return redirect(url_for('show_entries'))
 
+
 @app.route('/get_time')
 def get_time():
     now = datetime.utcnow()
     return json_response(time=now)
+
 
 @app.route('/increment_value', methods=['POST'])
 def increment_value():
@@ -104,8 +118,9 @@ def increment_value():
 def get_value():
     return dict(value=12)
 
-from blueprint import simple_page
 app.register_blueprint(simple_page, url_prefix='/pages')
+
+
 def get_blueprint_resource():
     with simple_page.open_resource('static/style.css') as f:
         code = f.read()
