@@ -22,3 +22,10 @@ class Entry(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     title = Column(String(), nullable=False)
     text = Column(String(), nullable=False)
+
+    def __init__(self, title=None, text=None):
+        self.title = title
+        self.text = text
+
+    def __repr__(self):
+        return '<Enrty %r>' % (self.name)

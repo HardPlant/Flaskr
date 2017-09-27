@@ -4,6 +4,7 @@ from flask import Flask, request, session, g, redirect, url_for, \
     abort, render_template, flash
 from flask_json import FlaskJSON, JsonError, json_response, as_json
 
+import database
 from blueprint import simple_page
 from database import db_session
 from models import User
@@ -20,6 +21,11 @@ json = FlaskJSON(app)
 
 app.config.from_object(__name__) # will find all UPPERCASE vars above
 # app.config.from_envvar("FLASKER_SETTINGS", silent=True) can load envvar, silent prevents if envvar doesn't exits
+
+
+def init_db():
+    return database.init_db()
+
 '''
 def connect_db():
     return sqlite3.connect(app.config['DATABASE'])
@@ -65,7 +71,6 @@ def show_entries():
     cur = g.db.execute('select title, text from entries order by id desc')
     entries = [dict(title=row[0], text=row[1]) for row in cur.fetchall()]
     return render_template('show_entries.html', entries=entries)
-
 
 @app.route('/add', methods=['POST'])
 def add_entry():
