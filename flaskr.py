@@ -1,10 +1,11 @@
-import sqlite3
-from contextlib import closing
 from datetime import datetime
 
 from flask import Flask, request, session, g, redirect, url_for, \
     abort, render_template, flash
 from flask_json import FlaskJSON, JsonError, json_response, as_json
+
+from database import db_session
+from models import User
 
 # configuration
 DATABASE = './tmp/flaskr.db'
@@ -18,7 +19,7 @@ json = FlaskJSON(app)
 
 app.config.from_object(__name__) # will find all UPPERCASE vars above
 # app.config.from_envvar("FLASKER_SETTINGS", silent=True) can load envvar, silent prevents if envvar doesn't exits
-
+'''
 def connect_db():
     return sqlite3.connect(app.config['DATABASE'])
 
@@ -28,10 +29,11 @@ def init_db(): # sqlite3 /tmp/flaskr.db < schema.sql
             db.cursor().executescript(f.read()) # cursor can execute whole script
         db.commit() # db commit explicitly
 '''
+'''
 Now : python shell can import like:
 from flaskr import init_db
 init_db()
-'''
+
 @app.before_request
 def before_request():
     g.db = connect_db() # g have only one info of one request, supports thread
@@ -39,6 +41,12 @@ def before_request():
 @app.teardown_request # when excepts
 def teardown_request(exception):
     g.db.close()
+'''
+@app.route('/add_user', methods=['POST'])
+def add_user():
+    u = User('admin', 'admin@localhost')
+    db_session.add(u)
+    db_session.commit()
 
 @app.route('/')
 def show_entries():
