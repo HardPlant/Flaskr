@@ -12,3 +12,6 @@ def init_db():
     #import myapp.model
     Base.metadata.create_all(bind=engine)
 
+def test_init_db():
+    engine = create_engine('sqlite://memory', convert_unicode=True)
+    Base.metadata.create_all(bind=engine)

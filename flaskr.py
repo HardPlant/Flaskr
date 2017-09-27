@@ -24,7 +24,10 @@ app.config.from_object(__name__) # will find all UPPERCASE vars above
 
 
 def init_db():
-    return database.init_db()
+    if app.config['TESTING']:
+        return database.test_init_db()
+    else:
+        return database.init_db()
 
 '''
 def connect_db():
