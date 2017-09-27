@@ -23,7 +23,6 @@ class FlaskrTestCase(unittest.TestCase):
 
     def test_empty_db(self):
         rv = self.app.get('/')
-        print rv.data
         assert 'No entries here so far' in rv.data
 
     def login(self, username, password):

@@ -7,7 +7,6 @@ from flask_json import FlaskJSON, JsonError, json_response, as_json
 import database
 import models
 from blueprint import simple_page
-from database import db_session
 
 # configuration
 DATABASE = './tmp/flaskr.db'
@@ -25,7 +24,8 @@ app.config.from_object(__name__) # will find all UPPERCASE vars above
 
 def init_db():
     if app.config['TESTING']:
-        return database.test_init_db()
+        global engine, db_session, Base
+        engine, db_session, Base = database.test_init_db()
     else:
         return database.init_db()
 
@@ -83,6 +83,8 @@ def add_entry():
     entry = models.Entry(request.form['title'], request.form['text'])
     db_session.add(entry)
     db_session.commit()
+
+    print db_session.session_factory
     flash('New entry was succesfully posted')
     return redirect(url_for('show_entries'))
 
