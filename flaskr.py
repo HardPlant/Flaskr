@@ -45,13 +45,16 @@ def teardown_request(exception):
 '''
 
 
-@app.route('/user', method='GET')
+@app.route('/get_user', methods=['GET'])
+@as_json
 def get_user():
+    userdata = request.get_json()
     return User.query.filter(User.name=='admin').first()
 
 
-@app.route('/user', method='POST')
+@app.route('/add_user', method=['POST'])
 def add_user():
+    request.get('username')
     u = User('admin', 'admin@localhost')
     db_session.add(u)
     db_session.commit()
