@@ -15,3 +15,10 @@ class User(Base):
 
     def __repr__(self):
         return '<User %r>' % (self.name)
+
+
+class Entry(Base):
+    __tablename__ = 'entries'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    title = Column(String(), nullable=False)
+    text = Column(String(), nullable=False)
