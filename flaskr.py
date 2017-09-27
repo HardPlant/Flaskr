@@ -55,13 +55,13 @@ def teardown_request(exception):
 @as_json
 def get_user():
     userdata = request.get_json()
-    return User.query.filter(User.name=='admin').first()
+    return models.User.query.filter(models.User.name=='admin').first()
 
 
 @app.route('/add_user', methods=['POST'])
 def add_user():
     request.get('username')
-    u = User('admin', 'admin@localhost')
+    u = models.User('admin', 'admin@localhost')
     db_session.add(u)
     db_session.commit()
 
